@@ -1,6 +1,6 @@
 ﻿namespace DAISIS.Models
 {
-    public class DesignersModel
+    public class Designers
     {
         public int designerId { get; set; }
         

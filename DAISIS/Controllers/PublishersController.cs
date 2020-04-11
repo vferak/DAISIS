@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 using DAISIS.Models;
 
 namespace DAISIS.Controllers
@@ -8,7 +7,7 @@ namespace DAISIS.Controllers
     {
         public ActionResult Index()
         {
-            ViewBag.Publishers = new Database<PublishersModel>().Load();
+            ViewBag.Publishers = new Database<Publishers>().Load();
             return View();
         }
     }

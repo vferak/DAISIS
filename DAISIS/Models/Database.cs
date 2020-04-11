@@ -16,7 +16,7 @@ namespace DAISIS.Models
             
             try
             {
-                var tableName = typeof(T).Name.Replace("Model", "");
+                var tableName = typeof(T).Name;
                 var query = new SqlCommand($"SELECT * FROM {tableName}", _connection);
 
                 _connection.Open();

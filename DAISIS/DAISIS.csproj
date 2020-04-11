@@ -121,10 +121,10 @@
         <Compile Include="Global.asax.cs">
             <DependentUpon>Global.asax</DependentUpon>
         </Compile>
-        <Compile Include="Models\DesignersModel.cs" />
+        <Compile Include="Models\Designers.cs" />
         <Compile Include="Models\GameModel.cs" />
         <Compile Include="Models\Database.cs" />
-        <Compile Include="Models\PublishersModel.cs" />
+        <Compile Include="Models\Publishers.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
     </ItemGroup>
     <ItemGroup>
