@@ -18,6 +18,12 @@ namespace DAISIS
                 url: "{controller}/{action}/{id}",
                 defaults: new {controller = "Home", action = "Index", id = UrlParameter.Optional}
             );
+            
+            routes.MapRoute(
+                name: "Publishers",
+                url: "{controller}/{action}/{id}",
+                defaults: new {controller = "Publishers", action = "Index", id = UrlParameter.Optional}
+            );
         }
     }
 }

@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ContentModelStore">
     <e p="C:\Users\vfera\.Rider2019.3\system\extResources" t="IncludeRecursive" />
-    <e p="C:\Users\vfera\.Rider2019.3\system\resharper-host\local\Transient\ReSharperHost\v193\SolutionCaches\_DAISIS.509521086.00" t="ExcludeRecursive" />
-    <e p="C:\Users\vfera\Documents\VSB\4_Semestr\DB\DAISIS" t="IncludeFlat">
+    <e p="C:\Users\vfera\.Rider2019.3\system\resharper-host\local\Transient\ReSharperHost\v193\SolutionCaches\_DAISIS.-1657055683.00" t="ExcludeRecursive" />
+    <e p="C:\Users\vfera\RiderProjects\DAISIS" t="IncludeFlat">
       <e p="DAISIS" t="IncludeRecursive">
         <e p="App_Data" t="Include" />
         <e p="App_Start" t="Include">
@@ -25,6 +25,7 @@
         </e>
         <e p="Controllers" t="Include">
           <e p="HomeController.cs" t="Include" />
+          <e p="PublishersController.cs" t="Include" />
         </e>
         <e p="DAISIS.csproj" t="IncludeRecursive" />
         <e p="favicon.ico" t="Include" />
@@ -37,7 +38,11 @@
         </e>
         <e p="Global.asax" t="Include" />
         <e p="Global.asax.cs" t="Include" />
-        <e p="Models" t="Include" />
+        <e p="Models" t="Include">
+          <e p="GameModel.cs" t="Include" />
+          <e p="Model.cs" t="Include" />
+          <e p="PublishersModel.cs" t="Include" />
+        </e>
         <e p="obj" t="ExcludeRecursive" />
         <e p="packages.config" t="Include" />
         <e p="Properties" t="Include">
@@ -65,6 +70,9 @@
           <e p="Home" t="Include">
             <e p="About.cshtml" t="Include" />
             <e p="Contact.cshtml" t="Include" />
+            <e p="Index.cshtml" t="Include" />
+          </e>
+          <e p="Publishers" t="Include">
             <e p="Index.cshtml" t="Include" />
           </e>
           <e p="Shared" t="Include">
