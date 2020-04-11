@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.Reflection;
 
 namespace DAISIS.Models
 {
@@ -13,7 +15,7 @@ namespace DAISIS.Models
         public IEnumerable<T> Load()
         {
             var result = new List<T>();
-            
+
             try
             {
                 var tableName = typeof(T).Name;
@@ -29,9 +31,11 @@ namespace DAISIS.Models
                     var properties = typeof(T).GetProperties();
                     foreach (var property in properties)
                     {
-                        typeof(T).GetProperty(property.Name)?.SetValue(model, reader[property.Name]);
+                        var value = ConvertToCorrectDataType(property, reader[property.Name].ToString());
+
+                        property.SetValue(model, value);
                     }
-                    
+
                     result.Add(model);
                 }
             }
@@ -41,6 +45,20 @@ namespace DAISIS.Models
             }
 
             return result;
+        }
+
+        private object ConvertToCorrectDataType(PropertyInfo property, string value)
+        {
+            if (property.PropertyType == typeof(int))
+            {
+                return Int32.Parse(value);
+            }
+            if (property.PropertyType == typeof(bool))
+            {
+                return Boolean.Parse(value);
+            }
+
+            return value;
         }
     }
 }

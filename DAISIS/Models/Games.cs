@@ -2,7 +2,7 @@
 
 namespace DAISIS.Models
 {
-    public class GamesModel
+    public class Games
     {
         public int GameId  { get; set; }
 
@@ -23,6 +23,6 @@ namespace DAISIS.Models
         public int AgeLimit { get; set; }
         
         public string Description { get; set; }
-        
+
     }
 }

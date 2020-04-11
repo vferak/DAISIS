@@ -41,7 +41,7 @@
         <e p="Models" t="Include">
           <e p="Database.cs" t="Include" />
           <e p="Designers.cs" t="Include" />
-          <e p="GameModel.cs" t="Include" />
+          <e p="Games.cs" t="Include" />
           <e p="Publishers.cs" t="Include" />
         </e>
         <e p="obj" t="ExcludeRecursive" />

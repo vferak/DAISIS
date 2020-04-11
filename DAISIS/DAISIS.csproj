@@ -122,7 +122,7 @@
             <DependentUpon>Global.asax</DependentUpon>
         </Compile>
         <Compile Include="Models\Designers.cs" />
-        <Compile Include="Models\GameModel.cs" />
+        <Compile Include="Models\Games.cs" />
         <Compile Include="Models\Database.cs" />
         <Compile Include="Models\Publishers.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
