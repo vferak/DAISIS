@@ -39,9 +39,9 @@
         <e p="Global.asax" t="Include" />
         <e p="Global.asax.cs" t="Include" />
         <e p="Models" t="Include">
+          <e p="Database.cs" t="Include" />
           <e p="DesignersModel.cs" t="Include" />
           <e p="GameModel.cs" t="Include" />
-          <e p="Model.cs" t="Include" />
           <e p="PublishersModel.cs" t="Include" />
         </e>
         <e p="obj" t="ExcludeRecursive" />

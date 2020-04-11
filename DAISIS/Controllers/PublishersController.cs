@@ -8,7 +8,7 @@ namespace DAISIS.Controllers
     {
         public ActionResult Index()
         {
-            var publishers = new Database<PublishersModel>().Load();
+            ViewBag.Publishers = new Database<PublishersModel>().Load();
             return View();
         }
     }

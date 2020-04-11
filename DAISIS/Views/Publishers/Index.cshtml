@@ -1,9 +1,15 @@
-﻿@{
+﻿@using DAISIS.Models
+@{
     ViewBag.Title = "Home Page";
 }
 
 <div class="row">
     <div class="col-md-4">
         <h2>Publishers</h2>
+        <ul>
+            @foreach (PublishersModel publisher in ViewBag.Publishers) {
+            <li>@publisher.name - @publisher.email</li>
+            }
+        </ul>
     </div>
 </div>
