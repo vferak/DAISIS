@@ -53,10 +53,6 @@ namespace DAISIS.Models
             {
                 return Int32.Parse(value);
             }
-            if (property.PropertyType == typeof(bool))
-            {
-                return Boolean.Parse(value);
-            }
 
             return value;
         }
