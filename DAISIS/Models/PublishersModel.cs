@@ -1,13 +1,13 @@
 ﻿namespace DAISIS.Models
 {
-    public class Publishers
+    public class PublishersModel
     {
-        public int PublisherId { get; set; }
+        public int publisherId { get; set; }
         
-        public string Name { get; set; }
+        public string name { get; set; }
         
-        public string Email { get; set; }
+        public string email { get; set; }
         
-        public string WebPage { get; set; }
+        public string web_page { get; set; }
     }
 }
