@@ -4,25 +4,28 @@ namespace DAISIS.Models
 {
     public class Games
     {
-        public int GameId  { get; set; }
+        public int gameID  { get; set; }
 
-        public int DesignerId { get; set; }
+        public int designerID { get; set; }
         
-        public int PublisherId { get; set; }
+        public int publisherID { get; set; }
 
-        public string Name { get; set; }
+        public string name { get; set; }
 
-        public int MinPlayerCount { get; set; }
+        public int min_player_count { get; set; }
         
-        public int MaxPlayerCount { get; set; }
+        public int max_player_count { get; set; }
         
-        public int MinGameTime { get; set; }
+        public int min_game_time { get; set; }
         
-        public int MaxGameTime { get; set; }
+        public int max_game_time { get; set; }
         
-        public int AgeLimit { get; set; }
+        public int age_limit { get; set; }
         
-        public string Description { get; set; }
-
+        public string description { get; set; }
+        
+        public string main_image { get; set; }
+        
+        public DateTime create_date { get; set; }
     }
 }

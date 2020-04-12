@@ -116,6 +116,7 @@
         <Compile Include="App_Start\BundleConfig.cs" />
         <Compile Include="App_Start\FilterConfig.cs" />
         <Compile Include="App_Start\RouteConfig.cs" />
+        <Compile Include="Controllers\GamesController.cs" />
         <Compile Include="Controllers\HomeController.cs" />
         <Compile Include="Controllers\PublishersController.cs" />
         <Compile Include="Global.asax.cs">
@@ -149,6 +150,7 @@
         <Content Include="Scripts\jquery.validate.unobtrusive.js" />
         <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
         <Content Include="Scripts\modernizr-2.8.3.js" />
+        <Content Include="Views\Games\Index.cshtml" />
         <Content Include="Views\Publishers\Index.cshtml" />
         <Content Include="Web.config" />
         <Content Include="Web.Debug.config">

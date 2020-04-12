@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ContentModelStore">
     <e p="C:\Users\vfera\.Rider2019.3\system\extResources" t="IncludeRecursive" />
-    <e p="C:\Users\vfera\.Rider2019.3\system\resharper-host\local\Transient\ReSharperHost\v193\SolutionCaches\_DAISIS.-1657055683.00" t="ExcludeRecursive" />
-    <e p="C:\Users\vfera\RiderProjects\DAISIS" t="IncludeFlat">
+    <e p="C:\Users\vfera\.Rider2019.3\system\resharper-host\local\Transient\ReSharperHost\v193\SolutionCaches\_DAISIS.509521086.00" t="ExcludeRecursive" />
+    <e p="C:\Users\vfera\Documents\VSB\4_Semestr\DB\DAISIS" t="IncludeFlat">
       <e p="DAISIS" t="IncludeRecursive">
         <e p="App_Data" t="Include" />
         <e p="App_Start" t="Include">
@@ -24,6 +24,7 @@
           <e p="Site.css" t="Include" />
         </e>
         <e p="Controllers" t="Include">
+          <e p="GamesController.cs" t="Include" />
           <e p="HomeController.cs" t="Include" />
           <e p="PublishersController.cs" t="Include" />
         </e>
@@ -68,6 +69,9 @@
         </e>
         <e p="Views" t="Include">
           <e p="_ViewStart.cshtml" t="Include" />
+          <e p="Games" t="Include">
+            <e p="Index.cshtml" t="Include" />
+          </e>
           <e p="Home" t="Include">
             <e p="About.cshtml" t="Include" />
             <e p="Contact.cshtml" t="Include" />
