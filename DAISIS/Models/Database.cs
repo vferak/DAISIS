@@ -15,10 +15,10 @@ namespace DAISIS.Models
 
         private readonly SqlConnection _connection = new SqlConnection(ConnectionString);
 
-        public IEnumerable<T> Load(Array parameters = null)
+        public IEnumerable<T> Load(string[] parameters = null)
         {
             var result = new List<T>();
-            
+
             var command = GetSelectCommand(parameters);
 
             try
@@ -27,10 +27,11 @@ namespace DAISIS.Models
 
                 var reader = command.ExecuteReader();
 
+                var properties = GetProperties(parameters);
+
                 while (reader.Read())
                 {
                     var model = new T();
-                    var properties = GetProperties(parameters);
                     foreach (var property in properties)
                     {
                         var value = ConvertToCorrectDataType(property, reader[property.Name].ToString());
@@ -49,15 +50,15 @@ namespace DAISIS.Models
             return result;
         }
 
-        private IEnumerable<PropertyInfo> GetProperties(Array parameters = null)
+        private PropertyInfo[] GetProperties(string[] parameters = null)
         {
             var properties = typeof(T).GetProperties();
 
             if (parameters != null)
             {
-                //properties = properties.Where(property => Array.Exists(parameters, element => element == property.Name)).ToArray(); // todo vyřešit mazání nechtěných elementu z pole
+                properties = Array.FindAll(properties, property => parameters.Contains(property.Name));
             }
-            
+
             return properties;
         }
 
@@ -77,23 +78,24 @@ namespace DAISIS.Models
 
         private bool ModelIsInDatabase(T model)
         {
-            var keyProperty = typeof(T).GetProperties().Where(property => property.IsDefined(typeof(KeyAttribute), false));
+            var keyProperty = typeof(T).GetProperties()
+                .Where(property => property.IsDefined(typeof(KeyAttribute), false));
             var result = Load();
             return true;
         }
 
-        private SqlCommand GetSelectCommand(Array parameters = null)
+        private SqlCommand GetSelectCommand(string[] parameters = null)
         {
             var queryString = BuildQueryString(parameters);
 
             var query = new SqlCommand(queryString, _connection);
 
             AddParamsToQuery(query, parameters);
-            
+
             return query;
         }
 
-        private string BuildQueryString(Array parameters = null)
+        private string BuildQueryString(string[] parameters = null)
         {
             var queryString = "SELECT";
 
@@ -104,7 +106,7 @@ namespace DAISIS.Models
                 foreach (var parameter in parameters)
                 {
                     queryString += $" {parameter}";
-                    
+
                     if (++i != length)
                     {
                         queryString += ", ";
@@ -121,7 +123,7 @@ namespace DAISIS.Models
             return queryString;
         }
 
-        private void AddParamsToQuery(SqlCommand query, Array parameters = null)
+        private void AddParamsToQuery(SqlCommand query, string[] parameters = null)
         {
         }
 
@@ -131,12 +133,12 @@ namespace DAISIS.Models
             {
                 return Int32.Parse(value);
             }
-            
+
             if (property.PropertyType == typeof(bool))
             {
                 return Boolean.Parse(value);
             }
-            
+
             if (property.PropertyType == typeof(DateTime))
             {
                 return DateTime.Parse(value);
