@@ -7,7 +7,7 @@ namespace DAISIS.Controllers
     {
         public ActionResult Index()
         {
-            ViewBag.Publishers = new Database<Publishers>().Load();
+            ViewBag.Publishers = new Publishers().Load();
             return View();
         }
     }

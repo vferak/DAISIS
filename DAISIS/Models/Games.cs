@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace DAISIS.Models
 {
-    public class Games
+    public class Games : Database<Games>
     {
         [Key]
         public int gameID  { get; set; }
