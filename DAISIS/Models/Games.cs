@@ -1,9 +1,11 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace DAISIS.Models
 {
     public class Games
     {
+        [Key]
         public int gameID  { get; set; }
 
         public int designerID { get; set; }
