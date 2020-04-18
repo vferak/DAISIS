@@ -1,13 +1,12 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
-using System.Configuration;
 
 namespace DAISIS.Models
 {
     public class Games : Database<Games>
     {
         [Key]
-        public int? gameID  { get; set; }
+        public int? gameID { get; set; }
 
         [Required]
         public int? designerID { get; set; }

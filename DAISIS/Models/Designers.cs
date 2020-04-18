@@ -1,9 +1,13 @@
-﻿namespace DAISIS.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace DAISIS.Models
 {
-    public class Designers
+    public class Designers : Database<Designers>
     {
-        public int designerId { get; set; }
+        [Key]
+        public int? designerID { get; set; }
         
+        [Required]
         public string name { get; set; }
     }
 }

@@ -34,7 +34,8 @@ namespace DAISIS.Models
                     {
                         if (reader.GetSchemaTable().Rows.OfType<DataRow>().Any(row => row["ColumnName"].ToString() == property.Name))
                         {
-                            property.SetValue(model, reader[property.Name]);
+                            var value = reader[property.Name];
+                            property.SetValue(model, Convert.IsDBNull(value) ? null : value);
                         }
                     }
 
@@ -49,6 +50,19 @@ namespace DAISIS.Models
             return result;
         }
 
+        private void ExecuteNonQuery(SqlCommand command)
+        {
+            try
+            {
+                _connection.Open();
+                command.ExecuteNonQuery();
+            }
+            finally
+            {
+                _connection.Close();
+            }
+        }
+
         public T LoadOne()
         {
             return Load().FirstOrDefault();
@@ -61,22 +75,18 @@ namespace DAISIS.Models
 
         public IEnumerable<T> LoadSql(string query)
         {
-            return ExecuteReader(GetSqlCommand(query));
+            return ExecuteReader(GetSqlCommandWithParameters(query));
         }
 
         public void Save()
         {
             var query = IsInsert() ? BuildInsertQueryString() : BuildUpdateQueryString();
-            
-            try
-            {
-                _connection.Open();
-                GetSqlCommand(query).ExecuteNonQuery();
-            }
-            finally
-            {
-                _connection.Close();
-            }
+            ExecuteNonQuery(GetSqlCommandWithParameters(query));
+        }
+
+        public void RunProcedure(string procedureName)
+        {
+            ExecuteNonQuery(GetSqlCommandWithProcedure(procedureName));
         }
 
         private bool IsInsert()
@@ -99,11 +109,23 @@ namespace DAISIS.Models
 
             return model.LoadOne() == null;
         }
-
+        
         private SqlCommand GetSqlCommand(string query)
         {
-            var command = new SqlCommand(query, _connection);
+            return new SqlCommand(query, _connection);
+        }
+        
+        private SqlCommand GetSqlCommandWithParameters(string query)
+        {
+            var command = GetSqlCommand(query);
             AddParamsToQuery(command);
+            return command;
+        }
+
+        private SqlCommand GetSqlCommandWithProcedure(string procedureName)
+        {
+            var command = GetSqlCommand(procedureName);
+            command.CommandType = CommandType.StoredProcedure;
             return command;
         }
 

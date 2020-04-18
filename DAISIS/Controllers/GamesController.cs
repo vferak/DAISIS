@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Security.Cryptography;
 using System.Web.Mvc;
 using DAISIS.Models;
 
@@ -21,7 +22,8 @@ namespace DAISIS.Controllers
                 age_limit = 10,
                 description = "popisek"
             };
-            game.Save();
+            //game.Save();
+            
             return View();
         }
     }
