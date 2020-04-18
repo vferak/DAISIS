@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Data;
 using System.Data.SqlClient;
-using System.Drawing.Imaging;
 using System.Linq;
 using System.Reflection;
 
@@ -24,13 +23,11 @@ namespace DAISIS.Models
             {
                 _connection.Open();
                 var reader = command.ExecuteReader();
-                
-                var properties = typeof(T).GetProperties();
 
                 while (reader.Read())
                 {
                     var model = new T();
-                    foreach (var property in properties)
+                    foreach (var property in typeof(T).GetProperties())
                     {
                         if (reader.GetSchemaTable().Rows.OfType<DataRow>().Any(row => row["ColumnName"].ToString() == property.Name))
                         {
@@ -92,8 +89,7 @@ namespace DAISIS.Models
         private bool IsInsert()
         {
             var model = new T();
-            var properties = typeof(T).GetProperties();
-            foreach (var property in properties)
+            foreach (var property in typeof(T).GetProperties())
             {
                 if (PropertyIsKey(property))
                 {
@@ -109,30 +105,24 @@ namespace DAISIS.Models
 
             return model.LoadOne() == null;
         }
-        
-        private SqlCommand GetSqlCommand(string query)
-        {
-            return new SqlCommand(query, _connection);
-        }
-        
+
         private SqlCommand GetSqlCommandWithParameters(string query)
         {
-            var command = GetSqlCommand(query);
+            var command = new SqlCommand(query, _connection);
             AddParamsToQuery(command);
             return command;
         }
 
         private SqlCommand GetSqlCommandWithProcedure(string procedureName)
         {
-            var command = GetSqlCommand(procedureName);
+            var command = GetSqlCommandWithParameters(procedureName);
             command.CommandType = CommandType.StoredProcedure;
             return command;
         }
 
         private void AddParamsToQuery(SqlCommand command)
         {
-            var properties = typeof(T).GetProperties();
-            foreach (var property in properties)
+            foreach (var property in typeof(T).GetProperties())
             {
                 var value = property.GetValue(this, null);
                 if (value != null)
@@ -147,8 +137,7 @@ namespace DAISIS.Models
             var queryString = $"SELECT * FROM {typeof(T).Name}";
             
             string whereString = null;
-            var properties = typeof(T).GetProperties();
-            foreach (var property in properties)
+            foreach (var property in typeof(T).GetProperties())
             {
                 var value = property.GetValue(this, null);
                 if (value == null) continue;
@@ -166,8 +155,7 @@ namespace DAISIS.Models
 
             string parametersString = null;
             string valuesString = null;
-            var properties = typeof(T).GetProperties();
-            foreach (var property in properties)
+            foreach (var property in typeof(T).GetProperties())
             {
                 var value = property.GetValue(this, null);
                 if (PropertyIsKey(property) || !PropertyIsEditable(property) || !PropertyIsRequired(property) && value == null) continue;
@@ -187,8 +175,7 @@ namespace DAISIS.Models
 
             string setString = null;
             string whereString = null;
-            var properties = typeof(T).GetProperties();
-            foreach (var property in properties)
+            foreach (var property in typeof(T).GetProperties())
             {
                 if (PropertyIsKey(property))
                 {
@@ -210,17 +197,17 @@ namespace DAISIS.Models
             return propertyName + " = @" + propertyName;
         }
         
-        private bool PropertyIsKey(PropertyInfo property)
+        public static bool PropertyIsKey(PropertyInfo property)
         {
             return Attribute.IsDefined(property, typeof(KeyAttribute));
         }
         
-        private bool PropertyIsRequired(PropertyInfo property)
+        public static bool PropertyIsRequired(PropertyInfo property)
         {
             return Attribute.IsDefined(property, typeof(RequiredAttribute));
         }
         
-        private bool PropertyIsEditable(PropertyInfo property)
+        public static bool PropertyIsEditable(PropertyInfo property)
         {
             var attribute = (EditableAttribute) Attribute.GetCustomAttribute(property, typeof(EditableAttribute));
             return attribute == null || attribute.AllowEdit;

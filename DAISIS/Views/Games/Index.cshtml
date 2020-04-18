@@ -8,7 +8,9 @@
         <h2>Publishers</h2>
         <ul>
             @foreach (Games game in ViewBag.Games) {
-            <li>@game.name - @game.description - @game.create_date</li>
+                <li>
+                    <a href='@Url.Action("Show", "Games", new { id = @game.gameID }, Request.Url?.Scheme)'>@game.name</a> - @game.description - @game.create_date
+                </li>
             }
         </ul>
     </div>

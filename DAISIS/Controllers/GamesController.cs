@@ -26,5 +26,15 @@ namespace DAISIS.Controllers
             
             return View();
         }
+
+        public ActionResult Show(int id)
+        {
+            var game = new Games() {gameID = id}.LoadOne();
+            
+            if (game == null) return HttpNotFound();
+
+            ViewBag.Game = game;
+            return View();
+        }
     }
 }
