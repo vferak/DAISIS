@@ -3,40 +3,39 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Data;
 using System.Data.SqlClient;
+using System.Drawing.Imaging;
 using System.Linq;
 using System.Reflection;
 
 namespace DAISIS.Models
 {
-    public class Database<T> where T : new()
+    public class Database<T> : IDatabase<T> where T : IDatabase<T>, new()
     {
         private const string ConnectionString =
             "Server=dbsys.cs.vsb.cz\\STUDENT;Database=fer0101;User ID=fer0101;Password=savZZc09Tc;";
 
         private readonly SqlConnection _connection = new SqlConnection(ConnectionString);
 
-        public IEnumerable<T> Load(string[] parameters = null)
+        private IEnumerable<T> ExecuteReader(SqlCommand command)
         {
             var result = new List<T>();
-
-            var command = GetSelectCommand(parameters);
 
             try
             {
                 _connection.Open();
-
                 var reader = command.ExecuteReader();
-
-                var properties = GetProperties(parameters);
+                
+                var properties = typeof(T).GetProperties();
 
                 while (reader.Read())
                 {
                     var model = new T();
                     foreach (var property in properties)
                     {
-                        var value = ConvertToCorrectDataType(property, reader[property.Name].ToString());
-
-                        property.SetValue(model, value);
+                        if (reader.GetSchemaTable().Rows.OfType<DataRow>().Any(row => row["ColumnName"].ToString() == property.Name))
+                        {
+                            property.SetValue(model, reader[property.Name]);
+                        }
                     }
 
                     result.Add(model);
@@ -50,25 +49,29 @@ namespace DAISIS.Models
             return result;
         }
 
-        private PropertyInfo[] GetProperties(string[] parameters = null)
+        public T LoadOne()
         {
-            var properties = typeof(T).GetProperties();
-
-            if (parameters != null)
-            {
-                properties = Array.FindAll(properties, property => parameters.Contains(property.Name));
-            }
-
-            return properties;
+            return Load().FirstOrDefault();
         }
 
-        public void Save(T model)
+        public IEnumerable<T> Load()
         {
-            var isInsert = ModelIsInDatabase(model);
+            return LoadSql(BuildSelectQueryString());
+        }
 
+        public IEnumerable<T> LoadSql(string query)
+        {
+            return ExecuteReader(GetSqlCommand(query));
+        }
+
+        public void Save()
+        {
+            var query = IsInsert() ? BuildInsertQueryString() : BuildUpdateQueryString();
+            
             try
             {
                 _connection.Open();
+                GetSqlCommand(query).ExecuteNonQuery();
             }
             finally
             {
@@ -76,75 +79,129 @@ namespace DAISIS.Models
             }
         }
 
-        private bool ModelIsInDatabase(T model)
+        private bool IsInsert()
         {
-            var keyProperty = typeof(T).GetProperties()
-                .Where(property => property.IsDefined(typeof(KeyAttribute), false));
-            var result = Load();
-            return true;
-        }
-
-        private SqlCommand GetSelectCommand(string[] parameters = null)
-        {
-            var queryString = BuildQueryString(parameters);
-
-            var query = new SqlCommand(queryString, _connection);
-
-            AddParamsToQuery(query, parameters);
-
-            return query;
-        }
-
-        private string BuildQueryString(string[] parameters = null)
-        {
-            var queryString = "SELECT";
-
-            if (parameters != null)
+            var model = new T();
+            var properties = typeof(T).GetProperties();
+            foreach (var property in properties)
             {
-                var i = 0;
-                var length = parameters.Length;
-                foreach (var parameter in parameters)
+                if (PropertyIsKey(property))
                 {
-                    queryString += $" {parameter}";
-
-                    if (++i != length)
+                    // todo třeba vyřešit tabulky s více než jedním primarním klíčem
+                    if (property.GetValue(this, null) == null)
                     {
-                        queryString += ", ";
+                        return true;
                     }
+
+                    property.SetValue(model, property.GetValue(this, null));
                 }
             }
-            else
-            {
-                queryString += " *";
-            }
 
-            queryString += $" FROM {typeof(T).Name}";
-
-            return queryString;
+            return model.LoadOne() == null;
         }
 
-        private void AddParamsToQuery(SqlCommand query, string[] parameters = null)
+        private SqlCommand GetSqlCommand(string query)
         {
+            var command = new SqlCommand(query, _connection);
+            AddParamsToQuery(command);
+            return command;
         }
 
-        private object ConvertToCorrectDataType(PropertyInfo property, string value)
+        private void AddParamsToQuery(SqlCommand command)
         {
-            if (property.PropertyType == typeof(int))
+            var properties = typeof(T).GetProperties();
+            foreach (var property in properties)
             {
-                return Int32.Parse(value);
+                var value = property.GetValue(this, null);
+                if (value != null)
+                {
+                    command.Parameters.AddWithValue("@" + property.Name, value);
+                }
+            }
+        }
+
+        private string BuildSelectQueryString()
+        {
+            var queryString = $"SELECT * FROM {typeof(T).Name}";
+            
+            string whereString = null;
+            var properties = typeof(T).GetProperties();
+            foreach (var property in properties)
+            {
+                var value = property.GetValue(this, null);
+                if (value == null) continue;
+                
+                whereString = whereString == null ? " WHERE " : whereString + " AND ";
+                whereString += FilterEquals(property.Name);
             }
 
-            if (property.PropertyType == typeof(bool))
+            return queryString + whereString;
+        }
+        
+        private string BuildInsertQueryString()
+        {
+            var queryString = $"INSERT INTO {typeof(T).Name}";
+
+            string parametersString = null;
+            string valuesString = null;
+            var properties = typeof(T).GetProperties();
+            foreach (var property in properties)
             {
-                return Boolean.Parse(value);
+                var value = property.GetValue(this, null);
+                if (PropertyIsKey(property) || !PropertyIsEditable(property) || !PropertyIsRequired(property) && value == null) continue;
+                parametersString = parametersString == null ? "" : parametersString + ", ";
+                parametersString += property.Name;
+
+                valuesString = valuesString == null ? "" : valuesString + ", ";
+                valuesString += "@" + property.Name;
             }
 
-            if (property.PropertyType == typeof(DateTime))
+            return queryString + " ( " + parametersString + " ) " + " VALUES ( " + valuesString + " ) ";
+        }
+        
+        private string BuildUpdateQueryString()
+        {
+            var queryString = $"UPDATE {typeof(T).Name}";
+
+            string setString = null;
+            string whereString = null;
+            var properties = typeof(T).GetProperties();
+            foreach (var property in properties)
             {
-                return DateTime.Parse(value);
+                if (PropertyIsKey(property))
+                {
+                    whereString = whereString == null ? " WHERE " : whereString + " AND ";
+                    whereString += FilterEquals(property.Name);
+                }
+                else
+                {
+                    setString = setString == null ? " SET " : setString + ", ";
+                    setString += FilterEquals(property.Name);
+                }
             }
 
-            return value;
+            return queryString + setString + whereString;
+        }
+        
+        private string FilterEquals(string propertyName)
+        {
+            return propertyName + " = @" + propertyName;
+        }
+        
+        private bool PropertyIsKey(PropertyInfo property)
+        {
+            return Attribute.IsDefined(property, typeof(KeyAttribute));
+        }
+        
+        private bool PropertyIsRequired(PropertyInfo property)
+        {
+            return Attribute.IsDefined(property, typeof(RequiredAttribute));
+        }
+        
+        private bool PropertyIsEditable(PropertyInfo property)
+        {
+            var attribute = (EditableAttribute) Attribute.GetCustomAttribute(property, typeof(EditableAttribute));
+            return attribute == null || attribute.AllowEdit;
         }
     }
 }
