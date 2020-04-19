@@ -78,7 +78,10 @@ namespace DAISIS.Models
         public void Save()
         {
             var query = IsInsert() ? BuildInsertQueryString() : BuildUpdateQueryString();
-            ExecuteNonQuery(GetSqlCommandWithParameters(query));
+            if (query != null)
+            {
+                ExecuteNonQuery(GetSqlCommandWithParameters(query));
+            }
         }
 
         public void RunProcedure(string procedureName)
@@ -93,7 +96,6 @@ namespace DAISIS.Models
             {
                 if (PropertyIsKey(property))
                 {
-                    // todo třeba vyřešit tabulky s více než jedním primarním klíčem
                     if (property.GetValue(this, null) == null)
                     {
                         return true;
@@ -158,7 +160,9 @@ namespace DAISIS.Models
             foreach (var property in typeof(T).GetProperties())
             {
                 var value = property.GetValue(this, null);
-                if (PropertyIsKey(property) || !PropertyIsEditable(property) || !PropertyIsRequired(property) && value == null) continue;
+                if ((PropertyIsKey(property) && value == null) ||
+                    !PropertyIsEditable(property) || (!PropertyIsRequired(property) && value == null)) continue;
+                
                 parametersString = parametersString == null ? "" : parametersString + ", ";
                 parametersString += property.Name;
 
@@ -189,7 +193,7 @@ namespace DAISIS.Models
                 }
             }
 
-            return queryString + setString + whereString;
+            return setString != null ? queryString + setString + whereString : null;
         }
         
         private string FilterEquals(string propertyName)
