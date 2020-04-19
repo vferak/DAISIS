@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Data;
 using System.Data.SqlClient;
+using System.Drawing.Imaging;
 using System.Linq;
 using System.Reflection;
 
@@ -80,6 +81,15 @@ namespace DAISIS.Models
             var query = IsInsert() ? BuildInsertQueryString() : BuildUpdateQueryString();
             if (query != null)
             {
+                ExecuteNonQuery(GetSqlCommandWithParameters(query));
+            }
+        }
+
+        public void Delete()
+        {
+            if (LoadOne() != null)
+            {
+                var query = BuildDeleteQueryString();
                 ExecuteNonQuery(GetSqlCommandWithParameters(query));
             }
         }
@@ -194,6 +204,23 @@ namespace DAISIS.Models
             }
 
             return setString != null ? queryString + setString + whereString : null;
+        }
+        
+        private string BuildDeleteQueryString()
+        {
+            var queryString = $"DELETE FROM {typeof(T).Name}";
+            
+            string whereString = null;
+            foreach (var property in typeof(T).GetProperties())
+            {
+                if (PropertyIsKey(property))
+                {
+                    whereString = whereString == null ? " WHERE " : whereString + " AND ";
+                    whereString += FilterEquals(property.Name);
+                }
+            }
+
+            return queryString + whereString;
         }
         
         private string FilterEquals(string propertyName)
