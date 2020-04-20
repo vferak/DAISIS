@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Data;
 using System.Data.SqlClient;
-using System.Drawing.Imaging;
 using System.Linq;
 using System.Reflection;
 
@@ -191,12 +190,13 @@ namespace DAISIS.Models
             string whereString = null;
             foreach (var property in typeof(T).GetProperties())
             {
+                var value = property.GetValue(this, null);
                 if (PropertyIsKey(property))
                 {
                     whereString = whereString == null ? " WHERE " : whereString + " AND ";
                     whereString += FilterEquals(property.Name);
                 }
-                else
+                else if (PropertyIsRequired(property) || value != null)
                 {
                     setString = setString == null ? " SET " : setString + ", ";
                     setString += FilterEquals(property.Name);

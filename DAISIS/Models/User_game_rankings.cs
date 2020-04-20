@@ -7,7 +7,7 @@ namespace DAISIS.Models
     public class User_game_rankings : Database<User_game_rankings>
     {
         [Key]
-        public int? eventID { get; set; }
+        public int? gameID { get; set; }
         
         [Key]
         public int? userID { get; set; }
