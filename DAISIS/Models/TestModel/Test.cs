@@ -32,7 +32,6 @@ namespace DAISIS.Models.TestModel
         private Users _users = new Users()
         {
             username = "Testovací jméno uživatele",
-            password = "9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08",
             email = "test@test.cz",
             avatar = "testovaciObrazek.jpg"
         };
@@ -65,6 +64,8 @@ namespace DAISIS.Models.TestModel
             place = "Testovací místo události",
             text = "Testovací text události"
         };
+
+        private Events _clonedEvent = new Events();
         
         private User_events _userEvents = new User_events(){};
 
@@ -83,7 +84,7 @@ namespace DAISIS.Models.TestModel
             _games.Save();
             _games = _games.LoadOne();
             
-            _users.Save();
+            _users.RunProcedure("registerUser");
             _users = _users.LoadOne();
 
             _userGameRankings.gameID = _games.gameID;
@@ -113,6 +114,9 @@ namespace DAISIS.Models.TestModel
             _userEvents.userID = _users.userID;
             _userEvents.Save();
             _userEvents = _userEvents.LoadOne();
+            
+            _clonedEvent.eventID = _events.eventID;
+            _clonedEvent.RunProcedure("cloneEvent");
 
             _designers.name = "Upravené jméno designéra";
             _designers.Save();
@@ -133,6 +137,7 @@ namespace DAISIS.Models.TestModel
             _users.username = "Upravené jméno uživatele";
             _users.Save();
 
+            _userEvents.eventID = null;
             _userEvents.Delete();
             _events.Delete();
             _threadComments.Delete();
@@ -141,9 +146,9 @@ namespace DAISIS.Models.TestModel
             _userGameRankings.Delete();
             _users.Delete();
             _games.Delete();
-            _designers.Delete();
-            _publishers.Delete();
 
+            result = "Testy proběhly úspěšně!";
+            
             return result;
         }
     }

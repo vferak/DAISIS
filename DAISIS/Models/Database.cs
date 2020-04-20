@@ -29,7 +29,8 @@ namespace DAISIS.Models
                     var model = new T();
                     foreach (var property in typeof(T).GetProperties())
                     {
-                        if (reader.GetSchemaTable().Rows.OfType<DataRow>().Any(row => row["ColumnName"].ToString() == property.Name))
+                        if (reader.GetSchemaTable().Rows.OfType<DataRow>()
+                            .Any(row => row["ColumnName"].ToString() == property.Name))
                         {
                             var value = reader[property.Name];
                             property.SetValue(model, Convert.IsDBNull(value) ? null : value);
@@ -38,6 +39,10 @@ namespace DAISIS.Models
 
                     result.Add(model);
                 }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
             }
             finally
             {
@@ -53,6 +58,10 @@ namespace DAISIS.Models
             {
                 _connection.Open();
                 command.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
             }
             finally
             {
@@ -213,7 +222,7 @@ namespace DAISIS.Models
             string whereString = null;
             foreach (var property in typeof(T).GetProperties())
             {
-                if (PropertyIsKey(property))
+                if (PropertyIsKey(property) && property.GetValue(this, null) != null)
                 {
                     whereString = whereString == null ? " WHERE " : whereString + " AND ";
                     whereString += FilterEquals(property.Name);
