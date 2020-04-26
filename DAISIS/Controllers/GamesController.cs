@@ -10,7 +10,7 @@ namespace DAISIS.Controllers
         public ActionResult Index()
         {
             ViewBag.Games = new Games().Load();
-            new Events() { eventID = 1 } .GetBestGamesFromParticipants();
+            ViewBag.Publishers = new Publishers().Load();
             return View();
         }
 

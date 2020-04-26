@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 
 namespace DAISIS.Models
 {
@@ -39,5 +41,10 @@ namespace DAISIS.Models
         
         [Editable(false)]
         public DateTime? create_date { get; set; }
+
+        public Publishers GetPublisher(IEnumerable<Publishers> publishers)
+        {
+            return publishers.FirstOrDefault(element => element.publisherID == publisherID);
+        }
     }
 }

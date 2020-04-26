@@ -22,7 +22,6 @@
                 <ul class="nav navbar-nav">
                     <li>@Html.ActionLink("Home", "Index", "Home")</li>
                     <li>@Html.ActionLink("Hry", "Index", "Games")</li>
-                    <li>@Html.ActionLink("Test", "Test", "Home")</li>
                 </ul>
             </div>
         </div>
@@ -31,6 +30,7 @@
         @RenderBody()
         <hr />
         <footer>
+            <p>@Html.ActionLink("Test", "Test", "Home")</p>
             <p>&copy; @DateTime.Now.2020 - My ASP.NET Application</p>
         </footer>
     </div>
