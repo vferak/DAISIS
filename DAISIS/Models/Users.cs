@@ -33,5 +33,10 @@ namespace DAISIS.Models
                 "SELECT * FROM users WHERE userID NOT IN (SELECT userID FROM threads WHERE create_date > DATEADD(month, -6, GETDATE())) AND userID NOT IN (SELECT userID FROM thread_comments WHERE create_date > DATEADD(month, -6, GETDATE()) ) AND userID NOT IN (SELECT userID FROM user_game_rankings WHERE create_date > DATEADD(month, -6, GETDATE()) );";
             return LoadSql(query);
         }
+
+        public void RegisterUser()
+        {
+            RunProcedure("registerUser");
+        }
     }
 }
