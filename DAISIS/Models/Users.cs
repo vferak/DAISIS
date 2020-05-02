@@ -36,6 +36,7 @@ namespace DAISIS.Models
 
         public void RegisterUser()
         {
+            password = "defaultAvatar.png"; // hack pro výchozí avatar
             RunProcedure("registerUser");
         }
     }
