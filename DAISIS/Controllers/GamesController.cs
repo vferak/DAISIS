@@ -48,9 +48,7 @@ namespace DAISIS.Controllers
                 return RedirectToAction("Index");
             }
             
-            ViewBag.Publishers = new Publishers().Load();
-            ViewBag.Designers = new Designers().Load();
-            return View(game);
+            return Create();
         }
     }
 }
