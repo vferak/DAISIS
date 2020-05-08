@@ -1,4 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Web.Mvc;
 
 namespace DAISIS.Models
 {
@@ -15,5 +18,10 @@ namespace DAISIS.Models
         
         [Required]
         public string web_page { get; set; }
+
+        public static List<SelectListItem> GetSelectList(IEnumerable<Publishers> publishers)
+        {
+            return publishers.Select(publisher => new SelectListItem {Text = publisher.name, Value = publisher.publisherID.ToString()}).ToList();
+        }
     }
 }

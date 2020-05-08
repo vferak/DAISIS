@@ -94,6 +94,7 @@ namespace DAISIS.Models.TestModel
             
             // 4.1. Registrace uživatele
             _users.RegisterUser();
+            _users.password = null;
             // 4.2. Zobrazení uživatele
             _users = _users.LoadOne();
             // 4.5. Zjištění všech neaktivních uživatelů

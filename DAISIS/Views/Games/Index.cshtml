@@ -7,16 +7,21 @@
 }
 
 <div class="row">
-    <div class="col-md-4">
-        <h2>Hry</h2>
-        <ul>
+    <div class="col-12 mt-4">
+        <h2 class="mb-5">
+            Hry
+            <span class="float-right">
+                <a href="@Url.Action("Create", "Games", new {}, Request.Url?.Scheme)" class="btn btn-primary">Nová hra</a>
+            </span>
+        </h2>
+        <div class="row">
             @foreach (var game in games)
             {
                 var publisher = game.GetPublisher(publishers);
                 <li>
-                    <a href='@Url.Action("Show", "Games", new { id = @game.gameID }, Request.Url?.Scheme)'>@game.name</a> - @publisher.name
+                    <a href="@Url.Action("Show", "Games", new {id = @game.gameID}, Request.Url?.Scheme)">@game.name</a> - @publisher.name
                 </li>
             }
-        </ul>
+        </div>
     </div>
 </div>
