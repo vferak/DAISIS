@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.IO;
-using System.Security.Cryptography;
+﻿using System.IO;
 using System.Web.Mvc;
 using DAISIS.Models;
 
@@ -8,6 +6,19 @@ namespace DAISIS.Controllers
 {
     public class GamesController : Controller
     {
+        private ActionResult ProcessForm(Games game)
+        {
+            if (game.image_file != null)
+            {
+                var mappedPath = HttpContext.Server.MapPath("~/App_Data/Blob/");
+                game.image_file.SaveAs(Path.Combine(mappedPath, game.image_file.FileName));
+                game.main_image = game.image_file.FileName;
+            }
+                
+            game.Save();
+            return RedirectToAction("Show", "Games", new {id = game.LoadOne().gameID});
+        }
+
         public ActionResult Index()
         {
             ViewBag.Games = new Games().Load();
@@ -18,7 +29,6 @@ namespace DAISIS.Controllers
         public ActionResult Show(int id)
         {
             var game = new Games() {gameID = id}.LoadOne();
-            
             if (game == null) return HttpNotFound();
 
             ViewBag.Game = game;
@@ -35,20 +45,33 @@ namespace DAISIS.Controllers
         [HttpPost]
         public ActionResult Create(Games game)
         {
-            if (ModelState.IsValid)
-            {
-                if (game.image_file != null)
-                {
-                    var mappedPath = HttpContext.Server.MapPath("~/App_Data/Blob/");
-                    game.image_file.SaveAs(Path.Combine(mappedPath, game.image_file.FileName));
-                    game.main_image = game.image_file.FileName;
-                }
-                
-                game.Save();
-                return RedirectToAction("Index");
-            }
-            
-            return Create();
+            return ModelState.IsValid ? ProcessForm(game) : Create();
+        }
+
+        public ActionResult Update(int? id)
+        {
+            var game = new Games() {gameID = id}.LoadOne();
+            if (game == null) return HttpNotFound();
+
+            ViewBag.Game = game;
+            ViewBag.Publishers = new Publishers().Load();
+            ViewBag.Designers = new Designers().Load();
+            return View();
+        }
+        
+        [HttpPost]
+        public ActionResult Update(Games game)
+        {
+            return ModelState.IsValid ? ProcessForm(game) : Update(game.gameID);
+        }
+        
+        public ActionResult Destroy(int id)
+        {
+            var game = new Games() {gameID = id}.LoadOne();
+            if (game == null) return HttpNotFound();
+
+            game.Delete();
+            return RedirectToAction("Index");
         }
     }
 }

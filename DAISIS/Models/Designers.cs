@@ -13,7 +13,7 @@ namespace DAISIS.Models
         [Required]
         public string name { get; set; }
         
-        public static List<SelectListItem> GetSelectList(IEnumerable<Designers> designers)
+        public static IEnumerable<SelectListItem> GetSelectList(IEnumerable<Designers> designers)
         {
             return designers.Select(publisher => new SelectListItem {Text = publisher.name, Value = publisher.designerID.ToString()}).ToList();
         }

@@ -19,7 +19,7 @@ namespace DAISIS.Models
         [Required]
         public string web_page { get; set; }
 
-        public static List<SelectListItem> GetSelectList(IEnumerable<Publishers> publishers)
+        public static IEnumerable<SelectListItem> GetSelectList(IEnumerable<Publishers> publishers)
         {
             return publishers.Select(publisher => new SelectListItem {Text = publisher.name, Value = publisher.publisherID.ToString()}).ToList();
         }

@@ -2,21 +2,38 @@
 @{
     ViewBag.Title = "Home Page";
 
-    IEnumerable<Games> games = ViewBag.Games;
-    IEnumerable<Publishers> publishers = ViewBag.Publishers;
+    Games game = ViewBag.Game;
 }
 
 <div class="row">
-    <div class="col-md-4">
-        <h2>Hry</h2>
-        <ul>
-            @foreach (var game in games)
-            {
-                var publisher = game.GetPublisher(publishers);
-                <li>
-                    <a href='@Url.Action("Show", "Games", new { id = @game.gameID }, Request.Url?.Scheme)'>@game.name</a> - @publisher.name
-                </li>
-            }
-        </ul>
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <h2>@game.name (@game.GetDesigner().name)</h2>
+                <ul class="nav nav-tabs card-header-tabs mt-4" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#description" data-toggle="tab">Popis</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#ratings" data-toggle="tab">Hodnocení</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#threads" data-toggle="tab">Příspěvky</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="card-body tab-content">
+                <div id="description" class="container tab-pane active">
+                    <h3 class="mb-3">Popis hry</h3>
+                    <p>@game.description</p>
+                </div>
+                <div id="ratings" class="container tab-pane">
+
+                </div>
+                <div id="threads" class="container tab-pane">
+                    @{ Html.RenderAction("Index", "Threads", new {gameId = game.gameID}); }
+                </div>
+            </div>
+        </div>
     </div>
 </div>

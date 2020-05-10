@@ -1,0 +1,32 @@
+﻿@using DAISIS.Models
+@{
+    Layout = null;
+    int gameId = ViewBag.GameId;
+    IEnumerable<Threads> threads = ViewBag.Threads;
+}
+<div class="row">
+    <div class="col-12">
+        <h3 class="mb-3">
+            Příspěvky
+            <span class="float-right">
+                <a href="@Url.Action("Create", "Threads", new {id = gameId})" class="btn btn-primary">Nový příspěvek</a>
+            </span>
+        </h3>
+        <ul class="list-group">
+            @foreach (var thread in threads)
+            {
+                <li class="list-group-item">
+                    <div class="btn-group float-right" role="group">
+                        <a class="btn btn-primary" href="@Url.Action("Update", "Threads", new {id = @thread.threadID})">
+                            <i class="fas fa-edit"></i>
+                        </a>
+                        <a class="btn btn-danger text-white" href="@Url.Action("Destroy", "Threads", new {id = @thread.threadID})">
+                            <i class="fas fa-trash"></i>
+                        </a>
+                    </div>
+                    <h5><a href="@Url.Action("Show", "Threads", new {id = @thread.threadID})">@thread.title</a></h5>
+                </li>
+            }
+        </ul>
+    </div>
+</div>

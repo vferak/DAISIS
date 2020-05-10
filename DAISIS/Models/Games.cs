@@ -60,5 +60,10 @@ namespace DAISIS.Models
         {
             return publishers.FirstOrDefault(element => element.publisherID == publisherID);
         }
+
+        public Designers GetDesigner()
+        {
+            return new Designers(){ designerID = designerID }.LoadOne();
+        }
     }
 }
