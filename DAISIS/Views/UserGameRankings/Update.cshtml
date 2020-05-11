@@ -1,0 +1,5 @@
+﻿@using DAISIS.Models
+@{
+    User_game_rankings ranking = ViewBag.Ranking;
+    Html.RenderPartial("Form", ranking);
+}

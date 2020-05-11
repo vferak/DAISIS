@@ -15,14 +15,8 @@ namespace DAISIS
 
             routes.MapRoute(
                 name: "Default",
-                url: "{controller}/{action}/{id}",
-                defaults: new {controller = "Home", action = "Index", id = UrlParameter.Optional}
-            );
-            
-            routes.MapRoute(
-                name: "Publishers",
-                url: "{controller}/{action}/{id}",
-                defaults: new {controller = "Publishers", action = "Index", id = UrlParameter.Optional}
+                url: "{controller}/{action}/{id}/{subId}",
+                defaults: new {controller = "Home", action = "Index", id = UrlParameter.Optional, subId = UrlParameter.Optional}
             );
         }
     }

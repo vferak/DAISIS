@@ -30,7 +30,7 @@ namespace DAISIS.Controllers
         
         public ActionResult Create(int? id)
         {
-            ViewBag.Thread = new Threads() {gameID = id, userID = 1};
+            ViewBag.Thread = new Threads() {gameID = id, userID = SystemValues.DEFAULT_USER_ID};
             return View();
         }
         

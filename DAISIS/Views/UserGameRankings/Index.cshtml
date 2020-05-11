@@ -1,0 +1,32 @@
+﻿@using DAISIS.Models
+@{
+    Layout = null;
+    int gameId = ViewBag.GameId;
+    IEnumerable<User_game_rankings> rankings = ViewBag.Rankings;
+}
+<div class="row">
+    <div class="col-12">
+        <h3 class="mb-3">
+            Hodnocení hry
+            <span class="float-right">
+                <a href="@Url.Action("Create", "UserGameRankings", new {id = gameId})" class="btn btn-primary">Nové hodnocení</a>
+            </span>
+        </h3>
+        <ul class="list-group">
+            @foreach (var ranking in rankings)
+            {
+                <li class="list-group-item">
+                    <div class="btn-group float-right" role="group">
+                        <a class="btn btn-primary" href="@Url.Action("Update", "UserGameRankings", new {id = @ranking.gameID})">
+                            <i class="fas fa-edit"></i>
+                        </a>
+                        <a class="btn btn-danger text-white" href="@Url.Action("Destroy", "UserGameRankings", new {id = @ranking.gameID, subId = @ranking.userID})">
+                            <i class="fas fa-trash"></i>
+                        </a>
+                    </div>
+                    <p><strong>(@ranking.rating)</strong> @ranking.text</p>
+                </li>
+            }
+        </ul>
+    </div>
+</div>

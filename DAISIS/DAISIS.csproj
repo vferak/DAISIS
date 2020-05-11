@@ -120,6 +120,7 @@
         <Compile Include="Controllers\HomeController.cs" />
         <Compile Include="Controllers\PublishersController.cs" />
         <Compile Include="Controllers\ThreadsController.cs" />
+        <Compile Include="Controllers\UserGameRankingsController.cs" />
         <Compile Include="Global.asax.cs">
             <DependentUpon>Global.asax</DependentUpon>
         </Compile>
@@ -129,6 +130,7 @@
         <Compile Include="Models\Games.cs" />
         <Compile Include="Models\Database.cs" />
         <Compile Include="Models\Publishers.cs" />
+        <Compile Include="Models\SystemValues.cs" />
         <Compile Include="Models\TestModel\Test.cs" />
         <Compile Include="Models\Threads.cs" />
         <Compile Include="Models\Thread_comments.cs" />
@@ -275,6 +277,11 @@
         <Content Include="Views\Threads\Index.cshtml" />
         <Content Include="Views\Threads\Show.cshtml" />
         <Content Include="Views\Threads\Update.cshtml" />
+        <Content Include="Views\UserGameRankings\Create.cshtml" />
+        <Content Include="Views\UserGameRankings\Form.cshtml" />
+        <Content Include="Views\UserGameRankings\Index.cshtml" />
+        <Content Include="Views\UserGameRankings\Show.cshtml" />
+        <Content Include="Views\UserGameRankings\Update.cshtml" />
         <Content Include="Web.config" />
         <Content Include="Web.Debug.config">
             <DependentUpon>Web.config</DependentUpon>

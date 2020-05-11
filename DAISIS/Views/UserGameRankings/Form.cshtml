@@ -1,0 +1,30 @@
+﻿@using DAISIS.Models
+@model DAISIS.Models.User_game_rankings
+<div class="row">
+    <div class="col-md-12">
+        @Html.ValidationSummary(true, "", new {@class = "text-danger"})
+    </div>
+    <div class="col-md-10 mx-auto">
+        <h2>Nové hodnocení hry</h2>
+        @using (Html.BeginForm(ViewContext.RouteData.Values["action"].ToString(), "UserGameRankings", FormMethod.Post, new {Enctype = "multipart/form-data"}))
+        {
+            <div class="form-group">
+                @Html.HiddenFor(m => m.gameID)
+                @Html.HiddenFor(m => m.userID)
+            </div>
+            <div class="form-row">
+                <div class="form-group col-sm-1 required">
+                    @Html.LabelFor(m => m.rating, new {Class = "control-label"})
+                    @Html.DropDownListFor(m => m.rating, User_game_rankings.GetSelectList(), new {Class = "form-control"})
+                    @Html.ValidationMessageFor(model => model.rating, "", new {@class = "text-danger"})
+                </div>
+                <div class="form-group col-sm-11 required">
+                    @Html.LabelFor(m => m.text, new {Class = "control-label"})
+                    @Html.TextAreaFor(m => m.text, new {Class = "form-control", Style = "min-height: 200px;"})
+                    @Html.ValidationMessageFor(model => model.text, "", new {@class = "text-danger"})
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary">Uložit</button>
+        }
+    </div>
+</div>

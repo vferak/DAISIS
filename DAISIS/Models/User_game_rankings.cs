@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Web.Mvc;
 using Newtonsoft.Json;
 
 namespace DAISIS.Models
@@ -19,5 +22,15 @@ namespace DAISIS.Models
         
         [Editable(false)]
         public DateTime? create_date { get; set; }
+        
+        public static IEnumerable<SelectListItem> GetSelectList()
+        {
+            var selectList = new List<SelectListItem>();
+            for (var i = 1; i <= 10; i++)
+            {
+                selectList.Add(new SelectListItem {Text = i.ToString(), Value = i.ToString()});
+            }
+            return selectList;
+        }
     }
 }

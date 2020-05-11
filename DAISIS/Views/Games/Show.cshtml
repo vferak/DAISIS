@@ -28,7 +28,7 @@
                     <p>@game.description</p>
                 </div>
                 <div id="ratings" class="container tab-pane">
-
+                    @{ Html.RenderAction("Index", "UserGameRankings", new {gameId = game.gameID}); }
                 </div>
                 <div id="threads" class="container tab-pane">
                     @{ Html.RenderAction("Index", "Threads", new {gameId = game.gameID}); }
