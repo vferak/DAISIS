@@ -24,7 +24,13 @@
                             <i class="fas fa-trash"></i>
                         </a>
                     </div>
-                    <p><strong>(@ranking.rating)</strong> @ranking.text</p>
+                    <p>
+                        <a class="btn btn-outline-secondary text-dark disabled text-center" style="min-width: 50px;" aria-disabled="true">
+                            <strong>@ranking.rating</strong>
+                        </a>
+                        <span class="text-muted pl-3"> @ranking.GetUser().username @ranking.create_date.Value.ToString("MM/dd/yyyy")</span>
+                        <p>@ranking.text</p>
+                    </p>
                 </li>
             }
         </ul>

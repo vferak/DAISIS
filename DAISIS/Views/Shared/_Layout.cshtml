@@ -25,11 +25,13 @@
 </nav>
 <div class="container body-content">
     @RenderBody()
-    <hr/>
-    <footer>
-        <p>@Html.ActionLink("Test", "Test", "Home")</p>
-    </footer>
+
 </div>
+<footer class="footer">
+    <div class="container">
+        <span class="text-muted">@Html.ActionLink("Test", "Test", "Home")</span>
+    </div>
+</footer>
 
 @Scripts.Render("~/bundles/jquery")
 @Scripts.Render("~/bundles/bootstrap")

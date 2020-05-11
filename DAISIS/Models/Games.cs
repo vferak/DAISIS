@@ -45,7 +45,13 @@ namespace DAISIS.Models
         public DateTime? create_date { get; set; }
         
         [Editable(false)][Display(Name="Hlavní obrázek")]
-        public HttpPostedFileBase image_file { get; set; }  
+        public HttpPostedFileBase image_file { get; set; }
+        
+        [Editable(false)][Display(Name="Průměrné hodnocení")]
+        public int? ratingAvg { get; set; }
+        
+        [Editable(false)][Display(Name="Počet hodnocení")]
+        public int? ratingCount { get; set; }
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
@@ -64,6 +70,11 @@ namespace DAISIS.Models
         public Designers GetDesigner()
         {
             return new Designers(){ designerID = designerID }.LoadOne();
+        }
+
+        public IEnumerable<Games> LoadWithRatings()
+        {
+            return LoadSql("SELECT g.*, ISNULL(AVG(ugr.rating), 0) as ratingAvg, COUNT(ugr.rating) as ratingCount FROM games g LEFT JOIN user_game_rankings ugr on g.gameID = ugr.gameID GROUP BY g.gameID, g.name, designerID, publisherID, min_player_count, max_player_count, min_game_time, max_game_time, age_limit, description, main_image, g.create_date");
         }
     }
 }

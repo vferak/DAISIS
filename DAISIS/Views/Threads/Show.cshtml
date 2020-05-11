@@ -3,16 +3,49 @@
     ViewBag.Title = "Home Page";
 
     Threads thread = ViewBag.Thread;
-    Games game = ViewBag.Game;
+    IEnumerable<Thread_comments> comments = ViewBag.Comments;
 }
 
+<div class="row mb-3">
+    <div class="col-md-12">
+        <a href="@Url.Action("Show", "Games", new {id = @thread.gameID})#threads" class="btn btn-secondary">Zpět na fórum</a>
+        <a href="@Url.Action("Create", "ThreadComments", new {id = @thread.gameID})" class="btn btn-primary float-right">Nový komentář</a>
+    </div>
+</div>
 <div class="row">
     <div class="col-md-12">
-        <a href="@Url.Action("Show", "Games", new {id = @game.gameID})#threads">@game.name</a>
         <div class="card">
             <div class="card-header">
-                <h2>@thread.title - @thread.text</h2>
+                <h4 class="d-inline">@thread.title</h4>
+                <div class="btn-group float-right" role="group">
+                    <a class="btn btn-danger" href="@Url.Action("Destroy", "UserThreadRankings", new {id = @thread.threadID})">
+                        <i class="fas fa-minus"></i>
+                    </a>
+                    <a class="btn btn-outline-secondary text-dark disabled" aria-disabled="true">
+                        @thread.GetRating()
+                    </a>
+                    <a class="btn btn-success text-white" href="@Url.Action("Create", "UserThreadRankings", new {id = @thread.threadID})">
+                        <i class="fas fa-plus"></i>
+                    </a>
+                </div>
             </div>
+            <div class="card-body">
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">
+                        <h5 class="card-title">@thread.text</h5>
+                        <span class="text-muted">- @thread.GetUser().username @thread.create_date.Value.ToString("MM/dd/yyyy")</span>
+                    </li>
+                    @foreach (var comment in comments)
+                    {
+                        <li class="list-group-item">
+                            <p>@comment.text</p>
+                            <span class="text-muted">- @comment.GetUser().username @comment.create_date.Value.ToString("MM/dd/yyyy")</span>
+                        </li>
+                    }
+                </ul>
+            </div>
+
         </div>
+
     </div>
 </div>

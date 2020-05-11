@@ -10,7 +10,7 @@ namespace DAISIS.Models
         [Key]
         public int? designerID { get; set; }
         
-        [Required]
+        [Required][Display(Name="Jméno")]
         public string name { get; set; }
         
         public static IEnumerable<SelectListItem> GetSelectList(IEnumerable<Designers> designers)

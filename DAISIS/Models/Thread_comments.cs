@@ -19,5 +19,10 @@ namespace DAISIS.Models
         
         [Editable(false)]
         public DateTime? create_date { get; set; }
+
+        public Users GetUser()
+        {
+            return new Users(){userID = userID}.LoadOne();
+        }
     }
 }

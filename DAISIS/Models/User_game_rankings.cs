@@ -15,9 +15,10 @@ namespace DAISIS.Models
         [Key]
         public int? userID { get; set; }
         
-        [Required]
+        [Required][Display(Name="Hodnocení")]
         public int? rating { get; set; }
         
+        [Display(Name="Text")]
         public string text { get; set; }
         
         [Editable(false)]
@@ -31,6 +32,11 @@ namespace DAISIS.Models
                 selectList.Add(new SelectListItem {Text = i.ToString(), Value = i.ToString()});
             }
             return selectList;
+        }
+
+        public Users GetUser()
+        {
+            return new Users(){userID = userID}.LoadOne();
         }
     }
 }

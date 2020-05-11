@@ -21,7 +21,7 @@ namespace DAISIS.Controllers
 
         public ActionResult Index()
         {
-            ViewBag.Games = new Games().Load();
+            ViewBag.Games = new Games().LoadWithRatings();
             return View();
         }
 

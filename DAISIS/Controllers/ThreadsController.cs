@@ -24,7 +24,7 @@ namespace DAISIS.Controllers
             if (thread == null) return HttpNotFound();
         
             ViewBag.Thread = thread;
-            ViewBag.Game = new Games(){gameID = thread.gameID}.LoadOne();
+            ViewBag.Comments = new Thread_comments() {threadID = id}.Load();
             return View();
         }
         

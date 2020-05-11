@@ -13,12 +13,12 @@
                 @Html.HiddenFor(m => m.userID)
             </div>
             <div class="form-row">
-                <div class="form-group col-sm-1 required">
+                <div class="form-group col-sm-2 required">
                     @Html.LabelFor(m => m.rating, new {Class = "control-label"})
                     @Html.DropDownListFor(m => m.rating, User_game_rankings.GetSelectList(), new {Class = "form-control"})
                     @Html.ValidationMessageFor(model => model.rating, "", new {@class = "text-danger"})
                 </div>
-                <div class="form-group col-sm-11 required">
+                <div class="form-group col-sm-10 required">
                     @Html.LabelFor(m => m.text, new {Class = "control-label"})
                     @Html.TextAreaFor(m => m.text, new {Class = "form-control", Style = "min-height: 200px;"})
                     @Html.ValidationMessageFor(model => model.text, "", new {@class = "text-danger"})
