@@ -22,7 +22,6 @@ namespace DAISIS.Controllers
         public ActionResult Index()
         {
             ViewBag.Games = new Games().Load();
-            ViewBag.Publishers = new Publishers().Load();
             return View();
         }
 

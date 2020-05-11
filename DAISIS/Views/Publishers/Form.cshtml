@@ -1,0 +1,34 @@
+﻿@using DAISIS.Models
+@model DAISIS.Models.Publishers
+<div class="row">
+    <div class="col-md-12">
+        @Html.ValidationSummary(true, "", new {@class = "text-danger"})
+    </div>
+    <div class="col-md-10 mx-auto">
+        <h2>Nová hra</h2>
+        @using (Html.BeginForm(ViewContext.RouteData.Values["action"].ToString(), "Publishers", FormMethod.Post, new {Enctype = "multipart/form-data"}))
+        {
+            <div class="form-group">
+                @Html.HiddenFor(m => m.publisherID)
+            </div>
+            <div class="form-group required">
+                @Html.LabelFor(m => m.name, new {Class = "control-label"})
+                @Html.TextBoxFor(m => m.name, new {Class = "form-control"})
+                @Html.ValidationMessageFor(m => m.name, "", new {@class = "text-danger"})
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-6 required">
+                    @Html.LabelFor(m => m.email, new {Class = "control-label"})
+                    @Html.TextBoxFor(m => m.email, new {Type = "email", Class = "form-control"})
+                    @Html.ValidationMessageFor(m => m.email, "", new {@class = "text-danger"})
+                </div>
+                <div class="form-group col-md-6">
+                    @Html.LabelFor(m => m.web_page, new {Class = "control-label"})
+                    @Html.TextBoxFor(m => m.web_page, new {Class = "form-control"})
+                    @Html.ValidationMessageFor(m => m.web_page, "", new {@class = "text-danger"})
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary">Uložit</button>
+        }
+    </div>
+</div>

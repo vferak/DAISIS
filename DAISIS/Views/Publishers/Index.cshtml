@@ -1,15 +1,49 @@
 ﻿@using DAISIS.Models
 @{
     ViewBag.Title = "Home Page";
+
+    IEnumerable<Publishers> publishers = ViewBag.Publishers;
 }
 
 <div class="row">
-    <div class="col-md-4">
-        <h2>Publishers</h2>
-        <ul>
-            @foreach (Publishers publisher in ViewBag.Publishers) {
-            <li>@publisher.name - @publisher.email</li>
-            }
-        </ul>
+    <div class="col-12 mt-4">
+        <h2 class="mb-3">
+            Vydavatelé
+            <span class="float-right">
+                <a href="@Url.Action("Create", "Publishers")" class="btn btn-primary">Nový vydavatel</a>
+            </span>
+        </h2>
+        <div class="row">
+            <div class="col-md-12">
+                <table class="table table-hover">
+                    <thead>
+                    <tr class="d-flex">
+                        <th class="col-10">Název</th>
+                        <th class="col-2 text-right">Akce</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @foreach (var publisher in publishers)
+                    {
+                        <tr class="d-flex">
+                            <td class="col-10">
+                                <a href="@Url.Action("Show", "Publishers", new {id = @publisher.publisherID})">@publisher.name</a>
+                            </td>
+                            <td class="col-2">
+                                <div class="btn-group float-right" role="group">
+                                    <a class="btn btn-primary" href="@Url.Action("Update", "Publishers", new {id = @publisher.publisherID})">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                    <a class="btn btn-danger text-white" href="@Url.Action("Destroy", "Publishers", new {id = @publisher.publisherID})">
+                                        <i class="fas fa-trash"></i>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 </div>

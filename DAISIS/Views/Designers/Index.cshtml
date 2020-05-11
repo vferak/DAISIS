@@ -2,15 +2,15 @@
 @{
     ViewBag.Title = "Home Page";
 
-    IEnumerable<Games> games = ViewBag.Games;
+    IEnumerable<Designers> designers = ViewBag.Designers;
 }
 
 <div class="row">
     <div class="col-12 mt-4">
         <h2 class="mb-3">
-            Hry
+            Designéři
             <span class="float-right">
-                <a href="@Url.Action("Create", "Games")" class="btn btn-primary">Nová hra</a>
+                <a href="@Url.Action("Create", "Designers")" class="btn btn-primary">Nový designér</a>
             </span>
         </h2>
         <div class="row">
@@ -23,18 +23,18 @@
                     </tr>
                     </thead>
                     <tbody>
-                    @foreach (var game in games)
+                    @foreach (var designer in designers)
                     {
                         <tr class="d-flex">
                             <td class="col-10">
-                                <a href="@Url.Action("Show", "Games", new {id = @game.gameID})">@game.name</a>
+                                <a href="@Url.Action("Show", "Designers", new {id = designer.designerID})">@designer.name</a>
                             </td>
                             <td class="col-2">
                                 <div class="btn-group float-right" role="group">
-                                    <a class="btn btn-primary" href="@Url.Action("Update", "Games", new {id = @game.gameID})">
+                                    <a class="btn btn-primary" href="@Url.Action("Update", "Designers", new {id = designer.designerID})">
                                         <i class="fas fa-edit"></i>
                                     </a>
-                                    <a class="btn btn-danger text-white" href="@Url.Action("Destroy", "Games", new {id = @game.gameID})">
+                                    <a class="btn btn-danger text-white" href="@Url.Action("Destroy", "Designers", new {id = designer.designerID})">
                                         <i class="fas fa-trash"></i>
                                     </a>
                                 </div>

@@ -1,0 +1,16 @@
+﻿@using DAISIS.Models
+@{
+    ViewBag.Title = "Home Page";
+
+    Publishers publisher = ViewBag.Publisher;
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <h2>@publisher.name</h2>
+            </div>
+        </div>
+    </div>
+</div>
