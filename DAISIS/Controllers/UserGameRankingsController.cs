@@ -11,6 +11,11 @@ namespace DAISIS.Controllers
     {
         private ActionResult ProcessForm(User_game_rankings ranking)
         {
+            if (ranking.text == null)
+            {
+                ranking.text = "";
+            }
+
             ranking.Save();
             return Redirect(Url.Action("Show", "Games", new {id = ranking.gameID}) + "#ratings");
         }
@@ -21,17 +26,7 @@ namespace DAISIS.Controllers
             ViewBag.Rankings = new User_game_rankings(){gameID = gameId}.Load();
             return View();
         }
-        
-        public ActionResult Show(int id)
-        {
-            var thread = new Threads() {threadID = id}.LoadOne();
-            if (thread == null) return HttpNotFound();
-        
-            ViewBag.Thread = thread;
-            ViewBag.Game = new Games(){gameID = thread.gameID}.LoadOne();
-            return View();
-        }
-        
+
         public ActionResult Create(int? id)
         {
             ViewBag.Ranking = new User_game_rankings() {gameID = id, userID = SystemValues.DEFAULT_USER_ID};
@@ -44,19 +39,19 @@ namespace DAISIS.Controllers
             return ModelState.IsValid ? ProcessForm(ranking) : Create(ranking.gameID);
         }
         
-        public ActionResult Update(int? id)
+        public ActionResult Update(int? id, int? subId)
         {
-            var thread = new Threads() {threadID = id}.LoadOne();
-            if (thread == null) return HttpNotFound();
+            var ranking = new User_game_rankings() {gameID = id, userID = subId}.LoadOne();
+            if (ranking == null) return HttpNotFound();
         
-            ViewBag.Thread = thread;
+            ViewBag.Ranking = ranking;
             return View();
         }
         
         [HttpPost]
         public ActionResult Update(User_game_rankings ranking)
         {
-            return ModelState.IsValid ? ProcessForm(ranking) : Update(ranking.gameID);
+            return ModelState.IsValid ? ProcessForm(ranking) : Update(ranking.gameID, ranking.userID);
         }
         
         public ActionResult Destroy(int id, int subId)

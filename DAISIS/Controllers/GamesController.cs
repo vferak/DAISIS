@@ -21,7 +21,14 @@ namespace DAISIS.Controllers
 
         public ActionResult Index()
         {
-            ViewBag.Games = new Games().LoadWithRatings();
+            var gameTime = Request.QueryString["gameTime"];
+            var playerCount = Request.QueryString["playerCount"];
+            var ageLimit = Request.QueryString["ageLimit"];
+            
+            ViewBag.Games = new Games().LoadWithRatings(gameTime, playerCount, ageLimit);
+            ViewBag.gameTime = gameTime;
+            ViewBag.playerCount = playerCount;
+            ViewBag.ageLimit = ageLimit;
             return View();
         }
 

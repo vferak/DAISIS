@@ -14,7 +14,7 @@ namespace DAISIS.Models
         [Required]
         public int? userID { get; set; }
         
-        [Required]
+        [Required][Display(Name="Text")]
         public string text { get; set; }
         
         [Editable(false)]

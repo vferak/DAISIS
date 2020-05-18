@@ -3,6 +3,9 @@
     ViewBag.Title = "Home Page";
 
     IEnumerable<Games> games = ViewBag.Games;
+    string gameTime = ViewBag.gameTime;
+    string playerCount = ViewBag.playerCount;
+    string ageLimit = ViewBag.ageLimit;
     var i = 1;
 }
 
@@ -14,15 +17,45 @@
                 <a href="@Url.Action("Create", "Games")" class="btn btn-primary">Nová hra</a>
             </span>
         </h2>
+        <div class="row mb-4">
+            <div class="col-md-12">
+                <form action="@Url.Action("Index", "Games")">
+                    <div class="form-row">
+                        <div class="form-group col-md-4 required">
+                            <label class="text-center">Jak dlouho chcete hrát?</label>
+                            <input type="number" name="gameTime" class="form-control" value="@gameTime"/>
+                        </div>
+                        <div class="form-group col-md-4 required">
+                            <label class="text-center">Kolik hráčů bude hrát?</label>
+                            <input type="number" name="playerCount" class="form-control" value="@playerCount"/>
+                        </div>
+                        <div class="form-group col-md-4 required">
+                            <label class="text-center">Od jakého věku?</label>
+                            <input type="number" name="ageLimit" class="form-control" value="@ageLimit"/>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary mx-auto d-block">Vyhledat</button>
+                </form>
+            </div>
+        </div>
         <div class="row">
             <div class="col-md-12">
                 <table class="table table-hover">
                     <thead>
                     <tr class="d-flex">
                         <th class="col-1">#</th>
-                        <th class="col-7">Název</th>
+                        <th class="col-4">Název</th>
                         <th class="col-1 text-center">Průměrné hodnocení</th>
                         <th class="col-1 text-center">Počet hodnocení</th>
+                        <th class="col-1 text-center">
+                            <i class="far fa-clock" style="font-size: 25px; line-height: 48px;"></i>
+                        </th>
+                        <th class="col-1 text-center">
+                            <i class="fas fa-users" style="font-size: 25px; line-height: 48px;"></i>
+                        </th>
+                        <th class="col-1 text-center">
+                            <i class="fas fa-birthday-cake" style="font-size: 25px; line-height: 48px;"></i>
+                        </th>
                         <th class="col-2 text-right">Akce</th>
                     </tr>
                     </thead>
@@ -31,9 +64,10 @@
                     {
                         <tr class="d-flex">
                             <td class="col-1">
-                                @i @{ i++; }
+                                @i
+                                @{ i++; }
                             </td>
-                            <td class="col-7">
+                            <td class="col-4">
                                 <a href="@Url.Action("Show", "Games", new {id = @game.gameID})">@game.name</a>
                             </td>
                             <td class="col-1 text-center">
@@ -41,6 +75,15 @@
                             </td>
                             <td class="col-1 text-center">
                                 @game.ratingCount
+                            </td>
+                            <td class="col-1 text-center">
+                                @game.DisplayGameTime()
+                            </td>
+                            <td class="col-1 text-center">
+                                @game.DisplayPlayerCount()
+                            </td>
+                            <td class="col-1 text-center">
+                                @game.age_limit+
                             </td>
                             <td class="col-2 text-center">
                                 <div class="btn-group float-right" role="group">

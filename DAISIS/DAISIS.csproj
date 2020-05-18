@@ -122,6 +122,7 @@
         <Compile Include="Controllers\PublishersController.cs" />
         <Compile Include="Controllers\ThreadsController.cs" />
         <Compile Include="Controllers\UserGameRankingsController.cs" />
+        <Compile Include="Controllers\ThreadCommentsController.cs" />
         <Compile Include="Controllers\UserThreadRankingsController.cs" />
         <Compile Include="Global.asax.cs">
             <DependentUpon>Global.asax</DependentUpon>
@@ -283,6 +284,9 @@
         <Content Include="Views\Publishers\Index.cshtml" />
         <Content Include="Views\Publishers\Show.cshtml" />
         <Content Include="Views\Publishers\Update.cshtml" />
+        <Content Include="Views\ThreadComments\Create.cshtml" />
+        <Content Include="Views\ThreadComments\Form.cshtml" />
+        <Content Include="Views\ThreadComments\Update.cshtml" />
         <Content Include="Views\Threads\Create.cshtml" />
         <Content Include="Views\Threads\Form.cshtml" />
         <Content Include="Views\Threads\Index.cshtml" />
@@ -291,7 +295,6 @@
         <Content Include="Views\UserGameRankings\Create.cshtml" />
         <Content Include="Views\UserGameRankings\Form.cshtml" />
         <Content Include="Views\UserGameRankings\Index.cshtml" />
-        <Content Include="Views\UserGameRankings\Show.cshtml" />
         <Content Include="Views\UserGameRankings\Update.cshtml" />
         <Content Include="Web.config" />
         <Content Include="Web.Debug.config">

@@ -17,7 +17,7 @@
             {
                 <li class="list-group-item">
                     <div class="btn-group float-right" role="group">
-                        <a class="btn btn-primary" href="@Url.Action("Update", "UserGameRankings", new {id = @ranking.gameID})">
+                        <a class="btn btn-primary" href="@Url.Action("Update", "UserGameRankings", new {id = @ranking.gameID, subId = @ranking.userID})">
                             <i class="fas fa-edit"></i>
                         </a>
                         <a class="btn btn-danger text-white" href="@Url.Action("Destroy", "UserGameRankings", new {id = @ranking.gameID, subId = @ranking.userID})">

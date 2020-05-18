@@ -55,6 +55,12 @@ namespace DAISIS.Models
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
+            if (min_player_count <= 0) {
+                yield return new ValidationResult("Minimální počet hráčů musí být větší než nula.");
+            }
+            if (min_game_time <= 0) {
+                yield return new ValidationResult("Minimální herní doba musí být větší než nula.");
+            }
             if (min_player_count > max_player_count) {
                 yield return new ValidationResult("Maximální počet hráčů musí být větší než minimální.");
             }
@@ -72,9 +78,33 @@ namespace DAISIS.Models
             return new Designers(){ designerID = designerID }.LoadOne();
         }
 
-        public IEnumerable<Games> LoadWithRatings()
+        public IEnumerable<Games> LoadWithRatings(string gameTime = null, string playerCount = null, string ageLimit = null)
         {
-            return LoadSql("SELECT g.*, ISNULL(AVG(ugr.rating), 0) as ratingAvg, COUNT(ugr.rating) as ratingCount FROM games g LEFT JOIN user_game_rankings ugr on g.gameID = ugr.gameID GROUP BY g.gameID, g.name, designerID, publisherID, min_player_count, max_player_count, min_game_time, max_game_time, age_limit, description, main_image, g.create_date");
+            var where = "WHERE g.gameID IS NOT NULL";
+
+            if (!string.IsNullOrEmpty(gameTime))
+            {
+                where += " AND min_game_time <= " + gameTime + " AND max_game_time >= " + gameTime;
+            }
+            if (!string.IsNullOrEmpty(playerCount))
+            {
+                where += " AND min_player_count <= " + playerCount + " AND max_player_count >= " + playerCount;
+            }
+            if (!string.IsNullOrEmpty(ageLimit))
+            {
+                where += " AND age_limit >= " + ageLimit;
+            }
+            return LoadSql("SELECT g.*, ISNULL(AVG(ugr.rating), 0) as ratingAvg, COUNT(ugr.rating) as ratingCount FROM games g LEFT JOIN user_game_rankings ugr on g.gameID = ugr.gameID " + where + " GROUP BY g.gameID, g.name, designerID, publisherID, min_player_count, max_player_count, min_game_time, max_game_time, age_limit, description, main_image, g.create_date");
+        }
+
+        public string DisplayGameTime()
+        {
+            return min_game_time == max_game_time ? min_game_time.ToString() : min_game_time + " - " + max_game_time;
+        }
+
+        public string DisplayPlayerCount()
+        {
+            return min_player_count == max_player_count ? min_player_count.ToString() : min_player_count + " - " + max_player_count;
         }
     }
 }
